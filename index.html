@@ -1,107 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Record Management</title>
-  <style>
-    body { font-family: Arial, sans-serif; background:#f4f6f8; margin:0; padding:20px; }
-    h1 { text-align:center; }
-    .container { max-width:900px; margin:auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
-    form { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:20px; }
-    input, button { padding:10px; font-size:14px; }
-    button { background:#2563eb; color:#fff; border:none; border-radius:4px; cursor:pointer; }
-    button:hover { background:#1e40af; }
-    table { width:100%; border-collapse:collapse; }
-    th, td { border:1px solid #ddd; padding:8px; text-align:center; }
-    th { background:#e5e7eb; }
-    .actions button { margin:0 4px; background:#16a34a; }
-    .actions .delete { background:#dc2626; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Student Record Management System</h1>
+  <h1>Student Record Management System</h1>
+  <form id="studentForm">
+    <input id="roll" placeholder="Roll No" required>
+    <input id="name" placeholder="Name" required>
+    <input id="course" placeholder="Course" required>
+    <input id="marks" type="number" placeholder="Marks" required>
+    <input id="grade" placeholder="Grade" required>
+    <button>Add / Update</button>
+  </form>
 
-    <form id="studentForm">
-      <input type="text" id="roll" placeholder="Roll No" required />
-      <input type="text" id="name" placeholder="Student Name" required />
-      <input type="text" id="course" placeholder="Course" required />
-      <input type="number" id="marks" placeholder="Marks" required />
-      <input type="text" id="grade" placeholder="Grade" required />
-      <button type="submit">Add / Update</button>
-    </form>
+  <table>
+    <thead>
+      <tr><th>Roll</th><th>Name</th><th>Course</th><th>Marks</th><th>Grade</th><th>Action</th></tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Roll No</th>
-          <th>Name</th>
-          <th>Course</th>
-          <th>Marks</th>
-          <th>Grade</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="studentTable"></tbody>
-    </table>
-  </div>
-
-  <script>
-    let students = JSON.parse(localStorage.getItem('students')) || [];
-    const table = document.getElementById('studentTable');
-    const form = document.getElementById('studentForm');
-
-    function render() {
-      table.innerHTML = '';
-      students.forEach((s, i) => {
-        table.innerHTML += `
-          <tr>
-            <td>${s.roll}</td>
-            <td>${s.name}</td>
-            <td>${s.course}</td>
-            <td>${s.marks}</td>
-            <td>${s.grade}</td>
-            <td class="actions">
-              <button onclick="edit(${i})">Edit</button>
-              <button class="delete" onclick="remove(${i})">Delete</button>
-            </td>
-          </tr>`;
-      });
-      localStorage.setItem('students', JSON.stringify(students));
-    }
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const student = {
-        roll: roll.value,
-        name: name.value,
-        course: course.value,
-        marks: marks.value,
-        grade: grade.value
-      };
-      const index = students.findIndex(s => s.roll === student.roll);
-      if (index >= 0) students[index] = student;
-      else students.push(student);
-      form.reset();
-      render();
-    });
-
-    function edit(i) {
-      const s = students[i];
-      roll.value = s.roll;
-      name.value = s.name;
-      course.value = s.course;
-      marks.value = s.marks;
-      grade.value = s.grade;
-    }
-
-    function remove(i) {
-      students.splice(i, 1);
-      render();
-    }
-
-    render();
-  </script>
+<script src="script.js"></script>
 </body>
 </html>
